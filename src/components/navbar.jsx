@@ -1,20 +1,23 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from "react";
 import { makeStyles } from "@mui/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
 import CartIcon from "../images/icon-cart.svg";
 import { styled } from "@mui/styles";
-import PersonIcon from "@mui/icons-material/Person";
 import "./nav.css";
+import Logo from "../images/logo.svg";
 import { useState } from "react";
 import { BootstrapDialogTitle } from "./Dialog";
-import Button from "@mui/material/Button";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Dialog from "@mui/material/Dialog";
-import { Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import {
+  Typography,
+  Dialog,
+  DialogContent,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { removeOrderItem } from "../ordersSlice";
+import Avatar from "../images/image-avatar.png";
 
 const Header = styled("nav")({
   display: "flex",
@@ -78,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 700,
     fontSize: "15px",
     opacity: 0.75,
-    // color: "436CD6",
   },
   span: {
     display: "block",
@@ -112,14 +114,33 @@ const useStyles = makeStyles((theme) => ({
     background: "#FF7D1A",
     padding: theme.spacing(1),
     borderRadius: "7px",
-    [theme.breakpoints.down("sm")]: {
-      width: "90%",
-    },
+    width: "80%",
     border: "none",
     fontWeight: 700,
     color: "#FFF",
     fontSize: 20,
     margin: "auto",
+  },
+  orderCount: {
+    position: "relative",
+    right: "30px",
+    bottom: "8px",
+    fontWeight: 700,
+    background: "#FF7D1A",
+    opacity: 1,
+    color: "#FFF",
+    borderRadius: "50%",
+    width: "15px",
+    height: "15px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: "10px",
+  },
+  noOrderCount: {
+    position: "relative",
+    right: "30px",
+    bottom: "8px",
   },
 }));
 
@@ -129,13 +150,15 @@ const Navbar = () => {
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(false);
   const { totalOrders } = useSelector((state) => state.orders);
-  console.log(totalOrders);
-
+  const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(!open);
   };
   const handleClose = () => {
     setOpen(!open);
+  };
+  const handleDelete = (item) => {
+    dispatch(removeOrderItem(item));
   };
   return (
     <>
@@ -150,32 +173,20 @@ const Navbar = () => {
               <span className={classes.span}></span>
 
               <ul id="menu">
-                <a
-                  href="https://www.youtube.com/"
-                  className={classes.toggleDivLink}
-                >
+                <a href="#" className={classes.toggleDivLink}>
                   <li>Collections</li>
                 </a>
-                <a
-                  href="https://www.youtube.com/"
-                  className={classes.toggleDivLink}
-                >
+                <a href="" className={classes.toggleDivLink}>
                   <li>Men</li>
                 </a>
-                <a
-                  href="https://www.youtube.com/"
-                  className={classes.toggleDivLink}
-                >
+                <a href="#" className={classes.toggleDivLink}>
                   <li>Women</li>
                 </a>
-                <a
-                  href="https://www.youtube.com/"
-                  className={classes.toggleDivLink}
-                >
+                <a href="#" className={classes.toggleDivLink}>
                   <li>About</li>
                 </a>
                 <a
-                  href="https://www.youtube.com/"
+                  href="#"
                   target="_blank"
                   className={classes.toggleDivLink}
                   rel="noreferrer"
@@ -184,40 +195,25 @@ const Navbar = () => {
                 </a>
               </ul>
             </div>{" "}
-            <span className={classes.logo}>sneakers</span>
+            <img src={Logo} alt="company logo" width={100} />
           </div>
         ) : (
           <div className={classes.headerSect}>
-            <span className={classes.logo}>sneakers</span>
+            <img src={Logo} alt="company logo" width={100} />
             <ul id="menu2">
-              <a
-                href="https://www.youtube.com/"
-                className={classes.toggleDivLink}
-              >
+              <a href="#" className={classes.toggleDivLink}>
                 <li>Collections</li>
               </a>
-              <a
-                href="https://www.youtube.com/"
-                className={classes.toggleDivLink}
-              >
+              <a href="#" className={classes.toggleDivLink}>
                 <li>Men</li>
               </a>
-              <a
-                href="https://www.youtube.com/"
-                className={classes.toggleDivLink}
-              >
+              <a href="#" className={classes.toggleDivLink}>
                 <li>Women</li>
               </a>
-              <a
-                href="https://www.youtube.com/"
-                className={classes.toggleDivLink}
-              >
+              <a href="#" className={classes.toggleDivLink}>
                 <li>About</li>
               </a>
-              <a
-                href="https://www.youtube.com/"
-                className={classes.toggleDivLink}
-              >
+              <a href="#" className={classes.toggleDivLink}>
                 <li>Contact</li>
               </a>
             </ul>
@@ -226,7 +222,14 @@ const Navbar = () => {
 
         <div className={classes.lastHeaderSect}>
           <img src={CartIcon} alt="cart icon" onClick={handleClickOpen} />
-          <PersonIcon />
+          <span
+            className={
+              totalOrders.length > 0 ? classes.orderCount : classes.noOrderCount
+            }
+          >
+            {totalOrders.length > 0 ? totalOrders.length : null}
+          </span>
+          <img src={Avatar} alt=" user avatar" />
         </div>
         <BootstrapDialog
           onClose={handleClose}
@@ -256,7 +259,7 @@ const Navbar = () => {
                         </span>
                       </Typography>
                     </div>
-                    <DeleteOutlineIcon />
+                    <DeleteOutlineIcon onClick={() => handleDelete(item)} />
                   </div>
                 ))}
                 <button className={classes.checkout}>Checkout</button>

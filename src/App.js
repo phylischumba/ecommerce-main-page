@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "./components/navbar";

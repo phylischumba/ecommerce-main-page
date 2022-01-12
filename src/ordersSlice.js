@@ -19,10 +19,15 @@ export const orderSlice = createSlice({
         state.totalOrders.push(payload);
       }
     },
+    removeOrderItem: (state, { payload }) => {
+      const newOrders = state.totalOrders.filter(
+        (item) => item.id !== payload.id
+      );
+      return { ...state, totalOrders: newOrders };
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { allOrders } = orderSlice.actions;
+export const { allOrders, removeOrderItem } = orderSlice.actions;
 
 export default orderSlice.reducer;

@@ -16,4 +16,5 @@ code {
 .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
   position: absolute !important;
   top: 20px;
+  width: 400px;
 }
