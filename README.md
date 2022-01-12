@@ -34,7 +34,7 @@ Users should be able to:
 ### Links
 
 - Solution URL: [https://github.com/phylischumba/ecommerce-main-page](https://github.com/phylischumba/ecommerce-main-page)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Live Site URL: [Live link](https://61df68a0fdbe318127116a36--hungry-hawking-192009.netlify.app/)
 
 ## My process
 
