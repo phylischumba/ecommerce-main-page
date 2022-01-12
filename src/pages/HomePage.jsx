@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import ImageGallery from "react-image-gallery";
 import { makeStyles } from "@mui/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
